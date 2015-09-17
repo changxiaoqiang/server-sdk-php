@@ -8,8 +8,9 @@
  * @modify  2015-02-02  10:21
  *
 //使用
-$p = new ServerAPI('appKey','AppSecret');
-$r = $p->getToken('11','22','33');
+
+$p = new ServerAPI('appKey','appSecret');
+$r = $p->userChatroomQuery('chatroom001');
 print_r($r);
  */
 
@@ -468,6 +469,25 @@ class ServerAPI{
                 throw new Exception('请求失败');
             return $ret;
         }catch (Exception $e) {
+            print_r($e->getMessage());
+        }
+    }
+
+    /**
+     * 查询聊天室内用户
+     * @param $chatroomId 聊天室 Id
+     */
+    public function userChatroomQuery($chatroomId) {
+        try{
+            if(empty($chatroomId)) {
+                throw new Exception('聊天室 Id 不能为空');
+            }
+            $ret = $this->curl('/chatroom/user/query', array('chatroomId' => $chatroomId));
+            if(empty($ret)) {
+                throw new Exception('请求失败');
+            }
+            return $ret;
+        } catch(Exception $e) {
             print_r($e->getMessage());
         }
     }
